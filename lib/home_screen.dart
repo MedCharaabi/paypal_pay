@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:flutter_pay/widgets/google_pay_test.dart';
+import 'package:pay/pay.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,24 +36,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            var request = BraintreeDropInRequest(
-              tokenizationKey: HomeScreen.tokenizationKey,
-              collectDeviceData: true,
-              paypalRequest: BraintreePayPalRequest(
-                amount: '4.30',
-                displayName: 'AIBRIGHT',
-              ),
-              cardEnabled: false,
-            );
-            final result = await BraintreeDropIn.start(request);
-            if (result != null) {
-              showNonce(result.paymentMethodNonce);
-            }
-          },
-          child: const Text('Pay with Paypal[ 4.30\$ ]'),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                var request = BraintreeDropInRequest(
+                  tokenizationKey: HomeScreen.tokenizationKey,
+                  collectDeviceData: true,
+                  paypalRequest: BraintreePayPalRequest(
+                    amount: '4.30',
+                    displayName: 'AIBRIGHT',
+                  ),
+                  cardEnabled: true,
+                );
+                final result = await BraintreeDropIn.start(request);
+                if (result != null) {
+                  showNonce(result.paymentMethodNonce);
+                }
+              },
+              child: const Text('Pay with Paypal[ 4.30\$ ]'),
+            ),
+            const GooglePayTest()
+          ],
         ),
       ),
     );
